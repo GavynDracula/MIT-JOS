@@ -1,0 +1,3 @@
+Question:
+    e is a virtual address which should equal to "envs + index". So, e should be above UENVS which is after KERNBASE. For all address, pgdir for virtual address above 
+KERNBASE is the same. 

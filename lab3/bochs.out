@@ -1,0 +1,34 @@
+Physical memory: 32768K available, base = 640K, extended = 31744K
+check_page_alloc() succeeded!
+page_check() succeeded!
+check_boot_pgdir() succeeded!
+[00000000] new env 00001000
+Incoming TRAP frame at 0xefbfffbc
+Incoming TRAP frame at 0xefbfffbc
+Making sure bss works right...
+Incoming TRAP frame at 0xefbfffbc
+Yes, good.  Now doing a wild write off the end...
+Incoming TRAP frame at 0xefbfffbc
+[00001000] user fault va 00c03020 ip 008000ac
+TRAP frame at 0xf018e000
+  edi  0x00000000
+  esi  0x00000000
+  ebp  0xeebfdfd0
+  oesp 0xefbfffdc
+  ebx  0x00000000
+  edx  0xeebfde88
+  ecx  0x00000032
+  eax  0x00000032
+  es   0x----0023
+  ds   0x----0023
+  trap 0x0000000e Page Fault
+  err  0x00000006
+  eip  0x008000ac
+  cs   0x----001b
+  flag 0x00010092
+  esp  0xeebfdfb8
+  ss   0x----0023
+[00001000] free env 00001000
+Destroyed the only environment - nothing more to do!
+Welcome to the JOS kernel monitor!
+Type 'help' for a list of commands.

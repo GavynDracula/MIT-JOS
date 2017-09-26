@@ -1,0 +1,11 @@
+--- kern/pmap.c	2007-09-12 22:06:25.000000000 +0800
++++ kern/pmap.c	2017-02-15 18:12:49.301667879 +0800
+@@ -198,7 +198,7 @@
+ 	//    - the read-only version mapped at UPAGES -- kernel R, user R
+ 	// Your code goes here:
+ 
+-
++    boot_map_segment(pgdir, UPAGES, ROUNDUP(npage * sizeof(struct Page), PGSIZE), PADDR(pages), PTE_U | PTE_P);
+ 
+ 	//////////////////////////////////////////////////////////////////////
+ 	// Map the kernel stack (symbol name "bootstack").  The complete VA

@@ -1,0 +1,21 @@
+Question:
+1. 
+    Notice value is a pointer, so x is uintptr_t(virtual address)
+
+Question:
+1.
+    Think about three calling to boot_map_segment() function.
+
+2.
+    This mapping is necessary. In function i386_vm_init(), after code "lcr0(cr0)" paging is turned on while all entry's segment address in gdt are 0x10000000(-KERNBASE).
+So at this point, mapping is "KERNBASE+x => x => unknown"(Format: va => la => pa). Before paging is turned on, the la is equal to pa. To keep what kernel access before 
+and after paging is the same, make that "pgdir[0] = pgdir[pdx(kernbase)]" so that mapping is "KERNBASE+x => x => x"(before paging the map is "KERNBASE+x => x => x"). 
+Next asm code will reload gdt whose entry's segment address is zero, so the final mapping is "KERNBASE+x => KERNBASE+x => x". Because kernel is mapped using function
+boot_map_segment(), so pgdir[0] doesn't matter any more(pgdir[0] = 0).
+    I guess in asm code, it just use first four MB.
+3.
+    Otherwise, the user will cause the os to crash.
+4.
+    2^32B = 4GB
+5.
+    One page dir and npage page tables, total size is PGSIZE + npage * PGSIZE = 4KB + 1024 * 4KB = 1025 * 4KB, about 4MB.

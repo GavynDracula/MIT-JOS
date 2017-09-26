@@ -1,0 +1,12 @@
+Questions:
+1.
+    If all exceptions/interrupts were delivered to the same handler, jos's handler wouldn't know which exception/interrupt calls handler. So exception/interrupt number 
+wouldn't be set correctly.
+2.
+    To make user/softint program behave correctly, modify the privilege of the 14th exception "page fault" to 3(user) in idt.
+
+Questions:
+1.
+    Just like last quesion 2, set privileg of "breakpoint" to 3 in idt.
+2.
+    ...

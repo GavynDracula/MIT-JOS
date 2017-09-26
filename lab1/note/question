@@ -1,0 +1,51 @@
+Exercise 4:
+    1.
+    [0x0000000000007c23] 0000:7c23 (unk. ctxt): mov eax, cr0              ; 0f20c0
+    [0x0000000000007c26] 0000:7c26 (unk. ctxt): or eax, 0x00000001        ; 6683c801
+    [0x0000000000007c2a] 0000:7c2a (unk. ctxt): mov cr0, eax              ; 0f22c0
+    2.
+    The last instruction of the boot loader is:
+    [0x0000000000007d7b] 0008:00007d7b (unk. ctxt): call eax                  ; ffd0
+    The first instruction of the kernel is:
+    [0x000000000010000c] 0008:0010000c (unk. ctxt): mov word ptr ds:0x472, 0x1234 ; 66c705720400003412
+    3.
+    By header of ELF
+
+Exercise 9:
+    1.
+    The interface is "Function Calling". 
+    "console.c" exports function "cputchar(char)".
+    Function "cprintf" in "printf.c" calls function "vcprintf", and function "vcprintf" calls function "putch" which calls function "cputchar" in "console.c".
+    2.
+    If the screen is full, roll the screen
+    3.
+    In the call to cprintf(), fmt points to string "x %d, y %x, z %d\n", ap points to parameter stack. Specially, ap points to formal parameter x.
+    vcprintf: fmt = 0xf0101744, ap = 0xf0101744 + (17 + 3) / 4 * 4
+    cons_putc('x')
+    cons_putc(' ')
+    va_arg: before the call, ap points to x; after the call, ap points to y
+    cons_putc('1')
+    cons_putc(',')
+    cons_putc(' ')
+    cons_putc('y')
+    cons_putc(' ')
+    va_arg: before the call, ap points to y; after the call, ap points to z
+    cons_putc('3')
+    cons_putc(',')
+    cons_putc(' ')
+    cons_putc('z')
+    cons_putc(' ')
+    va_arg: before the call, ap points to z
+    cons_putc('4')
+    cons_putc('\n')
+    4.
+    (1)"He110 World"
+    “Hello”实际上是由“H”与数字 e110 组成的,这就是因为十进制数 57616 用 16 进制数来表示便是 e110。而无符号整形数在这里则表示了一个字符串“rld”,由于无
+    符号整形数是占 4 个字节,而低位数字是存在低地址处。若将这四个字节看做一个字符串,则每个字节代表的就是一个字符的 ASCII码,所以低位的 0x72 代表的是
+    字符‘r’,而最高位的 0x00 代表就是空字符,即标识字符串的结束。于是字符串与“Wo”组成了“World”, 所以最终在屏幕上输出了“He110 World”
+    (2)set i to 0x726c6400
+    5.
+    显示出来 y=1656,是个随机的数字,这是因为可变参数只有一个,而可变参数指针指向的是这一个参数存放的位置,当函数试图去在内存中寻找不存在的第二个参数
+    的时候便会在内存中存放第一个参数之后的位置中去取,而这个位置存放的内容我们无法确定,因此打印出来的便是一个随机的数字。
+    6.
+    利用va_arg、va_start等函数自定义取参数函数，用一个队列存储形参，这样可以反向取形参，也就是保证位置靠前的形参先被取出

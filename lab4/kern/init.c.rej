@@ -1,0 +1,11 @@
+--- kern/init.c	2007-09-25 09:11:29.000000000 +0800
++++ kern/init.c	2017-02-16 23:37:12.785829316 +0800
+@@ -41,7 +39,7 @@
+ 	ENV_CREATE2(TEST, TESTSIZE);
+ #else
+ 	// Touch all you want.
+-	ENV_CREATE(user_hello);
++	ENV_CREATE(user_divzero);
+ #endif // TEST*
+ 
+ 

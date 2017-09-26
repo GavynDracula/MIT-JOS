@@ -1,0 +1,24 @@
+--- kern/init.c	2007-09-12 22:06:25.000000000 +0800
++++ kern/init.c	2017-02-15 10:45:43.915738045 +0800
+@@ -24,17 +24,19 @@
+ 	// Can't call cprintf until after we do this!
+ 	cons_init();
+ 
+-	cprintf("6828 decimal is %o octal!\n", 6828);
++	/*cprintf("6828 decimal is %o octal!\n", 6828);*/
+ 
+ 	// Lab 2 memory management initialization functions
+ 	i386_detect_memory();
+-	i386_vm_init();
++    i386_vm_init();
+ 
+ 
+ 
+ 
+ 
+ 
++    // Temporary user test code
++
+ 
+ 	// Drop into the kernel monitor.
+ 	while (1)

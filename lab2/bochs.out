@@ -1,0 +1,6 @@
+Physical memory: 32768K available, base = 640K, extended = 31744K
+check_page_alloc() succeeded!
+page_check() succeeded!
+check_boot_pgdir() succeeded!
+Welcome to the JOS kernel monitor!
+Type 'help' for a list of commands.

@@ -1,0 +1,64 @@
+Exercise 3:
+    Bios sets the idt first,initializes the key devices and then jump to 0000:7c00
+    启动的过程:
+        CPU 加电后从地址 0xfffffff0 开始运行,这个地址指向 BIOS 的 ROM 部分。
+        BIOS 先设置中断表,然后检测和初始化关键设备,然后把硬盘的第一个块加载到 0x00007c00 运行(JOS的boot)。
+
+Exercise 4:
+    To trace boot.S, use bochs's debugger command "b 0x0000:0x7c00" and "u /10 b 0x0000:0x7c00"
+    To trace bootmain, use bochs's debugger command "b 0x7c45"(this address can be got in "obj/boot/boot.asm"), and use command "c" to get into bootmain
+    "readsect" starts in address "0x0008:0x7c7c"("push %ebp").
+    
+Exercise 6:
+    Boot Loader will copy kern to 0xf0100000
+    Notice: the kern's link address is 0xf0100000 but its load address is 0x00100000
+
+Exercise 7:
+    If I change the "0x7c00" to "0x8c00" in boot/makefrag,the bochs will run the bios program to initialize the idt and the devices.
+    But when finished initialization,then jump to 0x7c00 continue to run the instructions,the bochs will restart the simulator.
+    Why? Because the boot loader is load at 0x8c00.There is no instructions at 0x7c00.
+
+Exercise 8:
+    The first instruction after the new mapping is established that would fail to work properly if the old mapping were still in place is:
+    [0x0000000000100027] 0008:00100027 (unk. ctxt): jmp far 0008:f010002e     ; ea2e0010f00800
+
+Exercise 9:
+    Modify code in lib/printfmt.c:
+    '''
+    // (unsigned) octal
+    case 'o':
+        num = getuint(&ap, lflag);
+        base = 8;
+        goto number;
+    '''
+
+Exercise 10:
+    In kern/entry.S:
+    '''
+    movl$0x0,%ebp# nuke frame pointer
+    # Set the stack pointer
+    movl$(bootstacktop),%esp
+    '''
+    and
+    '''
+        .p2alignPGSHIFT# force page alignment
+        .globlbootstack
+    bootstack:
+        .spaceKSTKSIZE
+        .globlbootstackbootstacktop   
+    bootstacktop:
+    '''
+    bootstack 标识了内存中的一个位置,表示从这里开始的 KSTKSIZE 个字节的区域都是属于这个临时堆栈的(KSTKSIZE 在 inc/memlayout.h 中定义为 32k),
+    而 bootstacktop 则指向的是这段区域后的第一个字节,由于刚开始的时候堆栈是空的,所以栈顶便是 bootstacktop 所指向的位置,于是程序便将
+    bootstacktop 的值赋给了 esp 寄存器
+    栈从内存空间的高地址向低地址增长
+
+Exercise 11:
+    The address of the test_backtrace function is 0x001001f4
+    Before call the test_backtrace function,it will push one 32-bits parameter in to the stack.
+    And the call instruction will push next instruction's cs and eip into the stack.
+    Jump into the function.
+    And then push the ebp into stack set ebp = esp
+    Then run the instruction of the function.
+    So before jump into the function test_backtrace,2 32 bits words will push into the stack
+    Before run the instruction of the function test_backtrace,3 32 bits words will push into the stack.
